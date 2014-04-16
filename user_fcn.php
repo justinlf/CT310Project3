@@ -1,9 +1,9 @@
 <?php
 
 class User {   
-	public $username = ' ';       	/* Log in Name */
-	public $hash = '';            	/* Salted Hash of password */
-	public $usertype = '';        	/* user Admin or Member */
+	public $username = ' ';
+	public $hash = '';
+	public $type = '';
 	
 	/* This function provides a complete tab delimeted dump of the contents/values of an object */
 	public function contents() {
@@ -17,58 +17,42 @@ class User {
 	}
 }
 
-function makeNewUser($username, $pass, $type) {
+function makeNewUser($username, $hash, $type) {
 	$u = new User();
 	$u->username = $username;	
-	$salt = createSalt($username,$pass);
-	$u->hash = $salt;
-	$u->usertype = $type;
+	$u->hash = $hash;
+	$u->type = $type;
 	return $u;
 }
 
-function setupDefaultUsers() {
-	$users = array();
-	$i = 0;
-	$users[$i++] = makeNewUser('admin', 'password', 'Admin');
-	writeUsers($users);
-}
-
-function writeUsers($users) {
-	if (!file_exists('users.tsv')) touch('users.tsv');
-	$fh = fopen('users.tsv', 'w+') or die("Can't open file");
-	fwrite($fh, $users[0]->headings()."\n");
-	for ($i = 0; $i < count($users); $i++) {
-		fwrite($fh, $users[$i]->contents()."\n");
+function addUser($user) {
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
 	}
-	fclose($fh);
-}
-
-function addUsers($user) {
-	$fh = fopen('users.tsv', 'a+') or die("Can't open file");
-	fwrite($fh, $user->contents()."\n");
-	fclose($fh);
+	$query = "INSERT INTO users VALUES('".$user->username."','".$user->hash."','".$user->type."');";
+	$db->exec($query);
 }
 
 function readUsers() {
-	if (! file_exists('users.tsv')) { setupDefaultUsers(); }
-	$contents = file_get_contents('users.tsv');
-	$lines    = preg_split("/\r|\n/", $contents, -1, PREG_SPLIT_NO_EMPTY);
-	$keys     = preg_split("/\t/", $lines[0]);
-	$i        = 0;
-	for ($j = 1; $j < count($lines); $j++) {
-		$vals = preg_split("/\t/", $lines[$j]);
-		if (count($vals) > 1) {
-			$u = new User();
-			for ($k = 0; $k < count($vals); $k++) {
-				$u->$keys[$k] = $vals[$k];
-			}
-			$users[$i] = $u;
-			$i++;
-		}
+	$users = array();
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
 	}
-
+	$query = "SELECT username, hash, type FROM users;";
+	$ret = $db->query($query);
+	foreach($ret as $row){
+		$user = makeNewUser($row[0], $row[1], $row[2]);
+		array_push($users, $user);
+	}
 	return $users;
 }
+
 function createSalt($user, $pass) {
 	$salt = substr($user, 0, 3);
 	return md5($salt.$pass);
