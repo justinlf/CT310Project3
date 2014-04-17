@@ -19,57 +19,9 @@ class userProfile {
 		return( array_reduce($vals, create_function('$a,$b','return is_null($a) ? "$b" : "$a"."|"."$b";')));
 	}
 }
-function getDelimeter() {
-	return "P1VBTDCYDH1V2SYYAF84TK163TJ4I47N";
-}
-
-function getProfiles($file) {
-	$delimeter = getDelimeter();
-	$contents = '';
-	$lines = array();
-	$i = 0;
-	
-	if (file_exists($file)) { $contents = file_get_contents($file); }
-	$pos = strpos($contents, $delimeter);	
-	while ($pos !== false) {
-		$line = substr($contents,0,$pos);
-		$lines[$i] = $line;
-		$contents = substr($contents,$pos+32);
-		$pos = strpos($contents, $delimeter);
-		$i++;
-	}	
-	return $lines;
-}
-
-function readProfiles() {
-	$file = 'profiles.txt';
-	$lines = getProfiles($file);
-	$i        = 0;
-	$keys     = explode("|", $lines[0]);				
-	for ($j = 1; $j < count($lines); $j++) {
-		$vals = explode("|", $lines[$j]);						
-		if (count($vals) > 1) {
-			$p = new userProfile();
-			for ($k = 0; $k < count($vals); $k++) {
-				$value = $vals[$k];
-				$p->$keys[$k] = trim($value);
-			}
-			$profiles[$i] = $p;
-			$i++;
-		}
-	}
-	return $profiles;
-}
-
-function prepProfileForWrite($username, $fname, $lname, $image, $gender, $mobile, $email) {
-	$delimeter = getDelimeter();
-	
-	$profile = " $username|$fname|$lname|$image|$gender|$mobile|$email \n";
-	return $profile;
-}
 
 function makeNewProfile($username, $fname, $lname, $image, $gender, $mobile, $email) {
-	$p = new profile();
+	$p = new userProfile();
 	$p->username = $username;
 	$p->fname = $fname;
 	$p->lname = $lname;	
@@ -80,32 +32,56 @@ function makeNewProfile($username, $fname, $lname, $image, $gender, $mobile, $em
 	return $p;
 }
 
-function writeProfile($profile) {
-	$file = 'profiles.txt';
-	$current = '';
-	if (file_exists($file)) { $current = file_get_contents($file); }
-	$delimeter = getDelimeter();
-	file_put_contents($file,rtrim($current).$profile.$delimeter);
+function readProfiles() {
+	$profiles = array();
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
+	}
+	$query = "SELECT username, fname, lname, image, gender, mobile, email FROM profiles;";
+	$ret = $db->query($query);
+	foreach($ret as $row){
+		$profile = makeNewProfile($row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6]);
+		array_push($profiles, $profile);
+	}
+	return $profiles;
+}
+
+function addProfile($profile) {
+	$username = $profile->username;
+	$fname = $profile->fname;
+	$lname = $profile->lname;	
+	$image = $profile->image;
+	$gender = $profile->gender;
+	$mobile = $profile->mobile;
+	$email = $profile->email;
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
+	}
+	$query = "INSERT INTO profiles VALUES('".$username."','".$fname."','".$lname."','".$image."','".$gender."','".$mobile."','".$email."');";
+	$db->exec($query);
 }
 
 function updateProfile($profile) {
-	$file = 'profiles.txt';
-	$lines = getProfiles($file);
-	$fh = fopen($file, 'w+') or die("Can't open file");
-	$keys = $lines[0];
-	fwrite($fh, $keys);
-	$delimeter = getDelimeter();
-	for ($j = 1; $j < count($lines); $j++) {
-		$myline = $delimeter.$lines[$j];
-		$vals = explode("|", $lines[$j]);	
-		if ((trim($vals[0]) == trim($profile->username))){										
-			$myline = $delimeter." ".$profile->username."|".$profile->fname."|".$profile->lname."|".$profile->image."|".$profile->gender."|".$profile->mobile."|".$profile->email." \n";
-			$myline = strip_tags($myline);
-		}
-		fwrite($fh, $myline);
+	$username = $profile->username;
+	$fname = $profile->fname;
+	$lname = $profile->lname;	
+	$image = $profile->image;
+	$gender = $profile->gender;
+	$mobile = $profile->mobile;
+	$email = $profile->email;
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
 	}
-	fwrite($fh, $delimeter."\n");
-
+	$query = "UPDATE profiles SET fname = '".$fname."', lname = '".$lname."', image = '".$image."', gender = '".$gender."', mobile = '".$mobile."', email = '".$email."' WHERE username = '".$username."';";
+	$db->exec($query);
 }
-
 ?>
