@@ -1,9 +1,9 @@
 <?php
 
 class friend {   
-	public $user1 = ' ';       		/* Log in Name to link back to users.tsv*/
-	public $user2 = ' ';          	/* First Name */
-	public $status = ' ';          	/* Last Name */	
+	public $user1 = ' ';
+	public $user2 = ' ';
+	public $status = ' ';
 	
 	/* This function provides a complete tab delimeted dump of the contents/values of an object */
 	public function contents() {
@@ -25,46 +25,44 @@ function makeNewFriend($user1, $user2, $status) {
 	return $f;
 }
 
-function setupBlankFriends() {
-	$friend = array();
-	$i = 0;
-	$friend[$i++] = makeNewFriend('', '', '');
-	writeFriends($friend);
-}
-
-function writeFriends($friends) {
-	if (!file_exists('friends.tsv')) touch('friends.tsv');
-	$fh = fopen('friends.tsv', 'w+') or die("Can't open file");
-	fwrite($fh, $friends[0]->headings()."\n");
-	for ($i = 0; $i < count($friends); $i++) {
-		fwrite($fh, $friends[$i]->contents()."\n");
-	}
-	fclose($fh);
-}
-
 function readFriends() {
-	if (! file_exists('friends.tsv')) { setupBlankFriends(); }
-	$contents = file_get_contents('friends.tsv');
-	$lines    = preg_split("/\r|\n/", $contents, -1, PREG_SPLIT_NO_EMPTY);
-	$keys     = preg_split("/\t/", $lines[0]);
-	$i        = 0;
-	for ($j = 1; $j < count($lines); $j++) {
-		$vals = preg_split("/\t/", $lines[$j]);
-		if (count($vals) > 1) {
-			$f = new friend();
-			for ($k = 0; $k < count($vals); $k++) {
-				$f->$keys[$k] = $vals[$k];
-			}
-			$friends[$i] = $f;
-			$i++;
-		}
+	$friends= array();
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
 	}
+	$query = "SELECT user1, user2, status FROM friends;";
+	$ret = $db->query($query);
+	foreach($ret as $row){
+		$friend = makeNewFriend($row[0], $row[1], $row[2]);
+		array_push($friends, $friend);
+	}
+		
 	return $friends;
 }
 
 function addFriend($friend) {
-	$fh = fopen('friends.tsv', 'a+') or die("Can't open file");
-	fwrite($fh, $friend->contents()."\n");
-	fclose($fh);
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
+	}
+	$query = "INSERT INTO friends VALUES('".$friend->user1."','".$friend->user2."','".$friend->status."');";
+	$db->exec($query);
 }
+
+function updateStatus($user1, $user2, $status) {
+	try{
+	$db = new PDO('sqlite:./users.db');
+	}catch(PDOException $e){
+		print "Error!: ".$e->getMessage();
+		die();		
+	}
+	$query = "UPDATE friends SET status = '".$status."' WHERE user1 = '".$user1."' AND user2 = '".$user2."';";
+	$db->exec($query);
+}
+
 ?>

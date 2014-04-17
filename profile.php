@@ -35,13 +35,12 @@ if($_SERVER["REQUEST_METHOD"]=="GET" || $_SERVER["REQUEST_METHOD"]=="POST"){
 		/* friend request accepted, add friend */
 		if($_GET['acceptRequest'] == 'true'){
 			$friend->status = "Accept";
-			array_push($friends, makeNewFriend($username, $pending, "Accept"));
-			writeFriends($friends);
+			updateStatus($pending, $username, "Accept");
 		}
 		/* friend request ignored, ignore request */
 		else{
 			$friend->status = "Ignore";
-			writeFriends($friends);
+			updateStatus($pending, $username, "Ignore");
 		}
 	}
 }

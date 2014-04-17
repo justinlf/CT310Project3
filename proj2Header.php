@@ -4,7 +4,7 @@
 	</div>	
 
 		<div class="homeHeaderContent">
-			<h1 class="introText">ProFile 2.0</h1>
+			<h1 class="introText">ProFile 3.0</h1>
 		</div>
 	
 	<div class="banner_foot">

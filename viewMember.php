@@ -85,7 +85,8 @@ $friends = readFriends();
 							<?php 
 								$friendStatus = "notfriends";
 								foreach ($friends as $f) {
-									if(($f->user1 == $username) && ($f->user2 == $viewprofile->username)){
+									if((($f->user1 == $username) && ($f->user2 == $viewprofile->username)) ||
+										(($f->user2 == $username) && ($f->user1 == $viewprofile->username))){
 										if($f->status == "Accept"){ 
 											$friendStatus = "accepted";
 										}

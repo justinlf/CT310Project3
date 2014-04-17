@@ -7,8 +7,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="content-style-type" content="text/css" />
-    <meta name="author" content="Tammi Bushue" />
-    <meta name="description" content="CT-310 Project 2: Social Networking Site" />
+    <meta name="author" content="Justin Fritzler" />
+    <meta name="description" content="CT-310 Project 3: Social Networking Site" />
     <meta name="keywords" content="HTML,CSS,PHP,CT310,Social,Networking" />
 	
 	<?php echo "<title> $title </title>\n" ?>	
