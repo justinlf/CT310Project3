@@ -305,12 +305,24 @@ border-right: 1px solid white;
 		transition: all 0.3s;
 	}
 	.messageBox{
+		font-family: "Open Sans",serif;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 1em;
+		color: #474747;
+		background-color: white;
 		border-style: groove;
 		border-width: medium;
-		padding-bottom: 10px;
+		padding-bottom: 5px;
 		padding-left: 5px;
 		padding-right: 5px;
 	}
+		.messageBox p{
+			margin-left: 10px;
+		}
+		.messageBox div{
+			font-size: .66em;
+		}
 	.messageBtn{
 		clear: both;
 		display: block;

@@ -390,6 +390,7 @@ input::-moz-focus-inner {
 textarea {
 	float: left;
 	width: 100%;
+	margin-top: 25px;
 	margin-bottom: 25px;
     overflow: auto; /* 1 */
     vertical-align: top; /* 2 */

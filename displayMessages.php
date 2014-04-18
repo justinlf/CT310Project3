@@ -8,7 +8,7 @@ function displayMessages($messages){
 	foreach ($messages as $message){
 		echo '<div class="messageBox">
 					<strong>'.$message->sender.'</strong><p>'.$message->message.'</p>
-					<sub>'.$message->time.'</sub>
+					<div align="right" <sub>'.$message->time.'</sub></div>
 				</div>';
 	}
 	echo '</div>';
