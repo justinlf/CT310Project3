@@ -151,7 +151,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 										<li><strong>Gender: </strong> <input type="text" name="gender" value= '.$userprofile->gender.'></li>
 										<li><strong>Mobile number: </strong> <input type="text" name="mobile" value='.$userprofile->mobile.'></li>
 										<li><strong>e-mail address: </strong> <input type="text" name="email" value='.$userprofile->email.'></li>
-										<li></li><input type="file" name="file"/></li>
+										<li><strong>Change image:</strong><input type="file" name="file"/></li>
 									</ul>
 									<input type="hidden" name="myMode" value="view"/>										
 									<input class="formButton2" type="submit" value = "Submit" name="update"/>

@@ -8,6 +8,7 @@ include 'Head.php';
 include 'user_fcn.php';
 include 'profile_fcn.php';
 include 'friend_fcn.php';
+include 'message_fcn.php';
 				
 if(isset($_SESSION['valid']) && $_SESSION['valid'])
 {
@@ -27,7 +28,16 @@ if($_SERVER["REQUEST_METHOD"]=="GET" || $_SERVER["REQUEST_METHOD"]=="POST"){
 		header( 'Location: profile.php?myUser='.$username ) ;
     if($_SERVER["REQUEST_METHOD"]=="POST"){
 		$viewuser =  $_GET["myUser"];
-		addFriend(makeNewFriend($username, $viewuser, 'Pending'));
+		if(isset($_POST["friend"])){	
+			addFriend(makeNewFriend($username, $viewuser, 'Pending'));
+		}
+		if(isset($_POST["message"])){
+			if($_POST["comment"] != ''){
+				$message = $_POST["comment"];
+				print_r($_POST);		
+				addMessage(makeNewMessage('NULL','new',$username, $viewuser, 'NULL', $message,'NULL'));
+			}
+		}
 	}
 }
 $profiles = readProfiles();
@@ -36,6 +46,7 @@ foreach ($profiles as $p) {
 		$viewprofile=$p;
 	}
 }
+$messages = readMessages($viewuser);
 $friends = readFriends();
 ?>
 	<?php 
@@ -98,14 +109,24 @@ $friends = readFriends();
 										}
 									}
 								}
-								if ($friendStatus == "notfriends"){?>
-									<form method="post" action="viewMember.php?myUser=<?php echo $viewprofile->username ?>">
-											<input class="socialBtn" type="submit" name='friend' value="Add Friend" />
-									</form>
-							<?php
+								if ($friendStatus == "notfriends"){
+									//echo "not friends";
+									echo
+									'<form method="post" action="viewMember.php?myUser='.$viewprofile->username.'">
+											<input class="socialBtn" type="submit" name="friend" value="Add Friend" />
+									</form>';
 								}
 								else if ($friendStatus == "pending"){
 									echo "<p class='waitingP' >Waiting for friend confirmation </p><br>";
+								}
+								else if ($friendStatus == "accepted"){
+									echo 
+									'<div class="userContentBox">
+										<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>
+									</div>
+									<form id="msgform" method="post" action="viewMember.php?myUser='.$viewprofile->username.'">
+											<input class="messageBtn" type="submit" name="message" value="Post Message" />
+									</form>';
 								}
 								include 'listFriends.php';
 							?>
