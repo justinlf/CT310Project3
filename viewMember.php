@@ -39,6 +39,14 @@ if($_SERVER["REQUEST_METHOD"]=="GET" || $_SERVER["REQUEST_METHOD"]=="POST"){
 				addMessage(makeNewMessage('NULL','new',$username, $viewuser, 'NULL', $message,'NULL'));
 			}
 		}
+		else if(isset($_POST["response"])){
+			if($_POST["comment"] != ''){
+				$message = $_POST["comment"];
+				$parentID = $_POST["parentID"];
+				print_r($_POST);		
+				addMessage(makeNewMessage('NULL','response',$username, $viewuser, 'NULL', $message, $parentID));
+			}
+		}
 	}
 }
 $profiles = readProfiles();
@@ -124,10 +132,20 @@ $friends = readFriends();
 									echo 
 									'<div class="userContentBox">
 										<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>
-									</div>
-									<form id="msgform" method="post" action="viewMember.php?myUser='.$viewprofile->username.'">
-											<input class="messageBtn" type="submit" name="message" value="Post Message" />
-									</form>';
+									</div>';
+									if(isset($_GET["reply"])) {
+										echo
+										'<form id="msgform" method="post" action="viewMember.php?myUser='.$viewuser.'">
+												<input type="hidden" name="parentID" value="'.$_GET["reply"].'">
+												<input class="messageBtn" type="submit" name="response" value="Reply" />
+										</form>';
+									}
+									else {
+										echo
+										'<form id="msgform" method="post" action="viewMember.php?myUser='.$viewuser.'">									
+												<input class="messageBtn" type="submit" name="message" value="Post Message" />
+										</form>';
+									}
 								}
 								include 'listFriends.php';
 							?>

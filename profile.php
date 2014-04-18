@@ -47,9 +47,16 @@ if($_SERVER["REQUEST_METHOD"]=="GET" || $_SERVER["REQUEST_METHOD"]=="POST"){
 	}
 	if(isset($_POST["message"])){
 		if($_POST["comment"] != ''){
-			$message = $_POST["comment"];
-			print_r($_POST);		
+			$message = $_POST["comment"];		
 			addMessage(makeNewMessage('NULL','new',$username, $viewuser, 'NULL', $message,'NULL'));
+		}
+	}
+	else if(isset($_POST["response"])){
+		if($_POST["comment"] != ''){
+			$message = $_POST["comment"];
+			$parentID = $_POST["parentID"];
+			print_r($_POST);		
+			addMessage(makeNewMessage('NULL','response',$username, $viewuser, 'NULL', $message, $parentID));
 		}
 	}
 }
@@ -170,12 +177,22 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 						if($username == $viewuser) {
 							displayMessages($messages);
 							echo 
-									'<div class="userContentBox">
-										<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>
-									</div>
-									<form id="msgform" method="post" action="profile.php?myUser='.$username.'">
-											<input class="messageBtn" type="submit" name="message" value="Post Message" />
-									</form>';
+							'<div class="userContentBox">
+								<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>
+							</div>';
+							if(isset($_GET["reply"])) {
+								echo
+								'<form id="msgform" method="post" action="profile.php?myUser='.$username.'">
+										<input type="hidden" name="parentID" value="'.$_GET["reply"].'">
+										<input class="messageBtn" type="submit" name="response" value="Reply" />
+								</form>';
+							}
+							else {
+								echo
+								'<form id="msgform" method="post" action="profile.php?myUser='.$username.'">									
+										<input class="messageBtn" type="submit" name="message" value="Post Message" />
+								</form>';
+							}
 						}
 						$userCompare = $userprofile->username;
 						include 'listFriends.php';	
