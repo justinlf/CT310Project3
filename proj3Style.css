@@ -366,8 +366,11 @@ border-right: 1px solid white;
 		text-decoration: none;
 		font-size: 1.125em;
 		padding: 10px 5%;
-		text-align: center;
+		text-align: left;
 		margin: auto;		
+	}
+	.resizedTextbox{
+		width: 100%;
 	}
 	.regButton{
 		clear: both;

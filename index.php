@@ -34,11 +34,11 @@ $profiles = readProfiles();
 							<table>
 								<tr>
 									<td>Name: </td>    
-									<td><input type="text" name="username" /></td>
+									<td><input class="resizedTextbox" type="text" name="username" /></td>
 								</tr>
 								<tr>
 									<td>Password: </td>
-									<td><input type="password" name="passwd" /></td>
+									<td><input class="resizedTextbox" type="password" name="passwd" /></td>
 								</tr>
 							</table>
 						</div>
