@@ -55,7 +55,6 @@ if($_SERVER["REQUEST_METHOD"]=="GET" || $_SERVER["REQUEST_METHOD"]=="POST"){
 		if($_POST["comment"] != ''){
 			$message = $_POST["comment"];
 			$parentID = $_POST["parentID"];
-			print_r($_POST);		
 			addMessage(makeNewMessage('NULL','response',$username, $viewuser, 'NULL', $message, $parentID));
 		}
 	}
@@ -101,8 +100,10 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 	$userprofile->image = (($filename != "")? $filename:$userprofile->image);
 	if (isset($_POST['update'])) {
 		updateProfile($userprofile);			
-	}	
-	$mode = $_POST["myMode"];
+	}
+	if (isset($_POST['myMode'])) {	
+		$mode = $_POST["myMode"];
+	}
 }
 ?>
 	<body>
