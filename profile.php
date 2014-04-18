@@ -7,6 +7,8 @@ include 'Head.php';
 include 'user_fcn.php';
 include 'profile_fcn.php';
 include 'friend_fcn.php';
+include 'message_fcn.php';
+include 'displayMessages.php';
 				
 if(isset($_SESSION['valid']) && $_SESSION['valid']){
 	$loggedin = true;
@@ -43,6 +45,13 @@ if($_SERVER["REQUEST_METHOD"]=="GET" || $_SERVER["REQUEST_METHOD"]=="POST"){
 			updateStatus($pending, $username, "Ignore");
 		}
 	}
+	if(isset($_POST["message"])){
+		if($_POST["comment"] != ''){
+			$message = $_POST["comment"];
+			print_r($_POST);		
+			addMessage(makeNewMessage('NULL','new',$username, $viewuser, 'NULL', $message,'NULL'));
+		}
+	}
 }
 
 $filename = "";
@@ -67,8 +76,8 @@ if(isset($_FILES["file"])){
 	}
 }	
 
-$users = readUsers();
-
+$users = readUsers($username);
+$messages = readMessages($username);
 $profiles = readProfiles();
 foreach ($profiles as $p) {
 	if (trim($p->username) == trim($username)) {
@@ -157,6 +166,16 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 									<input class="formButton2" type="submit" value = "Submit" name="update"/>
 								</form>';								
 							}
+						}
+						if($username == $viewuser) {
+							displayMessages($messages);
+							echo 
+									'<div class="userContentBox">
+										<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>
+									</div>
+									<form id="msgform" method="post" action="profile.php?myUser='.$username.'">
+											<input class="messageBtn" type="submit" name="message" value="Post Message" />
+									</form>';
 						}
 						$userCompare = $userprofile->username;
 						include 'listFriends.php';	

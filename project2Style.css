@@ -304,6 +304,13 @@ border-right: 1px solid white;
 		-moz-transition: all 0.3s;
 		transition: all 0.3s;
 	}
+	.messageBox{
+		border-style: groove;
+		border-width: medium;
+		padding-bottom: 10px;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
 	.messageBtn{
 		clear: both;
 		display: block;

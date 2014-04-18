@@ -9,6 +9,7 @@ include 'user_fcn.php';
 include 'profile_fcn.php';
 include 'friend_fcn.php';
 include 'message_fcn.php';
+include 'displayMessages.php';
 				
 if(isset($_SESSION['valid']) && $_SESSION['valid'])
 {
@@ -65,7 +66,7 @@ $friends = readFriends();
 	<body>
 		<div id="body-container">
 			<?php include 'proj2Header.php'; ?>		
-			<?php include "navigation.php" ?>
+			<?php include 'navigation.php' ?>
 
 			<div class="content">
 				<div class="smallerContent">
@@ -110,7 +111,6 @@ $friends = readFriends();
 									}
 								}
 								if ($friendStatus == "notfriends"){
-									//echo "not friends";
 									echo
 									'<form method="post" action="viewMember.php?myUser='.$viewprofile->username.'">
 											<input class="socialBtn" type="submit" name="friend" value="Add Friend" />
@@ -120,6 +120,7 @@ $friends = readFriends();
 									echo "<p class='waitingP' >Waiting for friend confirmation </p><br>";
 								}
 								else if ($friendStatus == "accepted"){
+									displayMessages($messages);
 									echo 
 									'<div class="userContentBox">
 										<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>
