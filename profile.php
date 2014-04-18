@@ -176,6 +176,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 						}
 						if($username == $viewuser) {
 							displayMessages($messages);
+							if(isset($_GET["replyUser"])) {
+										echo '<h3>Reply to '.$_GET["replyUser"].'</h3>';
+							}
 							echo 
 							'<div class="userContentBox">
 								<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>

@@ -129,6 +129,9 @@ $friends = readFriends();
 								}
 								else if ($friendStatus == "accepted"){
 									displayMessages($messages);
+									if(isset($_GET["replyUser"])) {
+										echo 'Reply to '.$_GET["replyUser"];
+									}
 									echo 
 									'<div class="userContentBox">
 										<textarea rows="4" cols="50" name="comment" form="msgform"></textarea>

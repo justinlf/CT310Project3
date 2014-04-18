@@ -23,9 +23,9 @@ function displayReplies($messages, $id){
 
 function recurseMessages($messages, $message){
 	echo '<div class="messageBox">
-		<strong>'.$message->sender.'</strong><p>'.$message->message.'</p>
-		<div align="right" <sub>'.$message->time.'</sub>
-		<A href="?myUser='.$message->receiver.'&reply='.$message->id.'#msgform">Reply</A></div>';
+		<strong>'.$message->sender.'</strong><hr /><p>'.$message->message.'</p>
+		<div class="messageFoot" align="right" <sub>'.$message->time.'</sub>
+		<A href="?myUser='.$message->receiver.'&replyUser='.$message->sender.'&reply='.$message->id.'#msgform">Reply</A></div>';
 		displayReplies($messages, $message->id);
 	echo '</div>';
 }
