@@ -100,7 +100,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 ?>
 	<body>
 		<div id="body-container">
-			<?php include 'proj2Header.php'; ?>		
+			<?php include 'proj3Header.php'; ?>		
 			<?php include "navigation.php" ?>
 
 			<div class="content">
@@ -203,7 +203,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 					</div>	
 				<?php } ?>
 			</div>
-				<?php include 'proj2Footer.php'; ?>
+				<?php include 'proj3Footer.php'; ?>
 		</div>
 	</body>
 </html>

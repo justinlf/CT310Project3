@@ -12,7 +12,7 @@ $profiles = readProfiles();
 ?>
 	<body>
 		<div id="body-container">
-			<?php include 'proj2Header.php'; ?>	
+			<?php include 'proj3Header.php'; ?>	
 			<div class="content">
 				<div class="biggerContent">
 					<h4 class="userListTitle">Current Members</h4>
@@ -73,7 +73,7 @@ $profiles = readProfiles();
 				</div>
 				
 			</div>
-			<?php include 'proj2Footer.php'; ?>	
+			<?php include 'proj3Footer.php'; ?>	
 		</div>	
 		
 	</body>

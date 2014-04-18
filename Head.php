@@ -14,7 +14,7 @@
 	<?php echo "<title> $title </title>\n" ?>	
 
 	<link rel="stylesheet" href="normalize.css" />
-	<link rel="stylesheet" href="project2Style.css" />
+	<link rel="stylesheet" href="proj3Style.css" />
 	<link href="http://fonts.googleapis.com/css?family=Abel|Medula+One" rel="stylesheet" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600,700' rel='stylesheet' type='text/css' />
 	
