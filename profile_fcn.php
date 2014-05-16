@@ -84,4 +84,17 @@ function updateProfile($profile) {
 	$query = "UPDATE profiles SET fname = '".$fname."', lname = '".$lname."', image = '".$image."', gender = '".$gender."', mobile = '".$mobile."', email = '".$email."' WHERE username = '".$username."';";
 	$db->exec($query);
 }
+
+function listPending(){
+	$db = new PDO("sqlite:./users.db");
+	$pending = "SELECT * FROM userAuth;";
+	$ret = $db->query($pending);
+	foreach($ret as $user){
+		if($user[6]==0){
+			echo $user[0].":";
+			echo "<a href='verify.php?user=$user[0]#'>Verify</a>";
+			echo "<a href='deny.php?user=$user[0]#'> | Deny</a>";
+		}
+	}
+}
 ?>

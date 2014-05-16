@@ -44,6 +44,7 @@ $profiles = readProfiles();
 						</div>
 						<input class="formButton" type="submit" value="Log In" />
 					</form>
+					<center><a href='register.php'>Register</a></center>
 
 					<?php  
 						$username = "";
@@ -58,7 +59,7 @@ $profiles = readProfiles();
 										$_SESSION ['startTime'] = time ();
 										$_SESSION ['userName'] = $username;
 										$_SESSION['valid'] = 1;
-										$_SESSION['userType'] = $u->usertype;
+										$_SESSION['userType'] = $u->type;
 										header( 'Location: profile.php?myUser='.$username ) ;
 									}
 									else

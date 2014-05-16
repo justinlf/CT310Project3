@@ -15,7 +15,7 @@ if(isset($_SESSION['valid']) && $_SESSION['valid']){
 }
 else{
 	$loggedin = false;
-	header('Location: index.php');
+	//header('Location: index.php');
     die();
 }
 
@@ -141,6 +141,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 										<li><strong>Mobile number: </strong> '.$userprofile->mobile.'</li>
 										<li><strong>e-mail address: </strong> '.$userprofile->email.'</li>
 									</ul>';
+										if(strcmp($_SESSION['userType'], "Admin")==0){
+											echo "<center><h3>Pending Users</h3><br>";
+											listPending();
+											echo "</center>";
+										}
+									
 									if ((strcmp($first,"129")==0 && strcmp($second,"82")==0)|| strcmp($first,"::1")==0 ||
 										(strcmp($first,"67")==0 && strcmp($second,"174")==0 && strcmp($third,"106")==0 && strcmp($forth,"156")==0))
 									{
@@ -172,6 +178,13 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 									</ul>
 									<input type="hidden" name="myMode" value="view"/>										
 									<input class="formButton2" type="submit" value = "Submit" name="update"/>
+								</form>
+								<form method="post" action="reqPassChange.php">
+									<center><input type="submit" value="Change Password">
+									<input type="text" name="pass">
+									<input type="hidden" name="email" value="'.$userprofile->email.'">
+									<input type="hidden" name="user" value="'.$userprofile->username.'">
+									</center>
 								</form>';								
 							}
 						}

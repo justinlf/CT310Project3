@@ -4,7 +4,7 @@ class User {
 	public $username = ' ';
 	public $hash = '';
 	public $type = '';
-	
+
 	/* This function provides a complete tab delimeted dump of the contents/values of an object */
 	public function contents() {
 		$vals = array_values(get_object_vars($this));
@@ -23,6 +23,16 @@ function makeNewUser($username, $hash, $type) {
 	$u->hash = $hash;
 	$u->type = $type;
 	return $u;
+}
+
+function newAuthUser($username, $pass, $type, $email, $ip){
+	$db = new PDO('sqlite:./users.db');
+	$hash = createSalt($username, $pass);
+	$key = substr( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ,mt_rand( 0 ,50 ) ,1 ) .substr( md5( time() ), 1);
+	$insert = "INSERT INTO userAuth VALUES('$username', '$hash', '$type', '$email', '$key', '$ip', 0);";
+	echo "Registration Pending: Must be approved by an admin.";
+	$db->exec($insert);
+
 }
 
 function addUser($user) {
